@@ -6,4 +6,8 @@ router.get('/', function(req, res) {
   res.send('respond with a resource');
 });
 
+router.post('add', function(req, res){
+  res.json(s_ok);
+});
+
 module.exports = router;
