@@ -4,6 +4,11 @@
     <link rel='stylesheet', href='/stylesheets/style.css'/>
   </head>
   <body>
-    block content
+	<h1>Show all customers</h1>
+	<ul>
+	{% for customer in customers %}
+		<li>{{customer.domain}}</li>
+	{% endfor %}
+	</ul>
   </body>
 </html>

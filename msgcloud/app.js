@@ -5,7 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cons = require('consolidate');
-
+var db = require('./models');
+var path = require('path');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
@@ -46,6 +47,18 @@ if (app.get('env') === 'development') {
         });
     });
 }
+
+db.sequelize
+  .sync({ force: true })
+  .complete(function(err) {
+    if (err) {
+      throw err[0]
+    } else {
+      app.listen(3000, function(){
+        console.log('Express server listening on port ' + app.get('port'))
+      })
+    }
+  });
 
 // production error handler
 // no stacktraces leaked to user
