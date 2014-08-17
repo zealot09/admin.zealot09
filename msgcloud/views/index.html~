@@ -12,7 +12,7 @@
             version = "",
             currentUser = '{{ CurrentUser }}',
             permissions = [],
-            siteMap = JSON.parse('{{ SiteNodeMap | json_encode | safe}}');
+            siteMap = {{ SiteNodeMap }};
     </script>
     <link href="//s0.cdn.jituanyun.com/ext/gpl/4.2.1/resources/ext-theme-neptune/ext-theme-neptune-all.css" rel="stylesheet" />
     <link href="/stylesheets/ClearButton.css" rel="stylesheet">
@@ -20,7 +20,6 @@
 </head>
 <body>
     <p>Loading, please wait...</p>
-   {{ SiteNodeMa }}
     <script src="//s0.cdn.jituanyun.com/ajax/libs/json3/3.2.5/json3.min.js"></script>
     <script src="//s0.cdn.jituanyun.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="//s0.cdn.jituanyun.com/ajax/libs/datejs/1.0/date.min.js"></script>

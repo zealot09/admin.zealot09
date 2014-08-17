@@ -1,0 +1,47 @@
+*, body, html {
+    font-family: 微软雅黑, 'Open Sans', serif;
+}
+
+h1, h2, h3 {
+    font-family: 微软雅黑, 黑体;
+}
+
+/**客户统计数据表格*/
+#statsTable table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.5em 0 0 0;
+}
+
+#statsTable table th {
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+    padding: 4px 0;
+    text-align: center;
+}
+
+#statsTable table td {
+    text-align: left;
+    border-bottom: 1px dotted #ccc;
+    padding: 4px;
+    text-align: center;
+}
+
+/**gateway 查看余额短信统计量*/
+table.hometable {
+    border-spacing: 2px;
+    border-color: gray;
+}
+
+    table.hometable td.label {
+        width: 130px;
+        font-weight: bold;
+        color: #888;
+        text-align: right;
+        padding-right: 8px;
+    }
+
+table.hometable td.rs {
+    text-decoration: underline;
+    /*font-style:italic;*/
+}
