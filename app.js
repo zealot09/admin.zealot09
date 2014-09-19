@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cons = require('consolidate');
 var db = require('./models');
-var path = require('path');
+// var path = require('path');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
@@ -54,7 +54,7 @@ db.sequelize
     if (err) {
       throw err[0]
     } else {
-      app.listen(3000, function(){
+      app.listen(8080, function(){
         console.log('Express server listening on port ' + app.get('port'))
       })
     }

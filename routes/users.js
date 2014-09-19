@@ -7,7 +7,7 @@ router.get('/', function(req, res) {
 });
 
 router.post('add', function(req, res){
-  res.json(s_ok);
+  res.json('s_ok');
 });
 
 module.exports = router;
