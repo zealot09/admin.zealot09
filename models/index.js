@@ -2,7 +2,7 @@ var fs = require('fs'),
     path = require('path'),
     Sequelize = require('sequelize'),
     lodash = require('lodash'),
-    sequelize = new Sequelize('zealot_admin', 'zealot09', ''),
+    sequelize = new Sequelize('cgblog_development', 'zealot09', ''),
     db = {};
 
  

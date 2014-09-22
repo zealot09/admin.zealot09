@@ -17,7 +17,8 @@
     "consolidate": "~0.10.0",
     "iniparser": "~1.0.5",
     "mysql": "~2.4.2",
-    "sequelize": "~1.7.9",
-    "lodash": "~2.4.1"
+    "sequelize": "~2.0.0",
+    "lodash": "~2.4.1",
+    "underscore": "~1.7.0"
   }
 }

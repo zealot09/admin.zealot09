@@ -81,15 +81,7 @@ module.exports = function(sequelize, DataType){
 			field: 'ip'
 		}
         }, {
-		tableName: 'customer',
-		getterMethods: {
-		    Id: function () { return this.getDataValue('id'); },
-		    Domain: function () { return this.getDataValue('domain'); }
-		  },
-		  setterMethods: {
-		    Id: function (v) { this.setDataValue('id', v); },
-		    Domain: function () { this.setDataValue('domain', v);  }
-		  }
+		tableName: 'customer'
 	});
 
 	return Customer;

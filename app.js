@@ -9,6 +9,8 @@ var db = require('./models');
 // var path = require('path');
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var categories = require("./routes/categories");
+var posts = require("./routes/posts");
 
 var app = express();
 
@@ -26,6 +28,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/category', categories);
+app.use('/post', posts);
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -33,8 +37,6 @@ app.use(function(req, res, next) {
     err.status = 404;
     next(err);
 });
-
-/// error handlers
 
 // development error handler
 // will print stacktrace
@@ -49,13 +51,15 @@ if (app.get('env') === 'development') {
 }
 
 db.sequelize
-  .sync({ force: false })
+  .sync({
+    logging: console.log,
+    force: false
+  })
   .complete(function(err) {
     if (err) {
       throw err[0]
     } else {
       app.listen(8080, function(){
-        console.log('Express server listening on port ' + app.get('port'))
       })
     }
   });
