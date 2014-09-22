@@ -1,7 +1,7 @@
 (function (Ext, $) {
     Ext.Loader.setConfig({
         paths: {
-            App: Ext.String.format('{0}app', window.baseUrl || '')
+            App: Ext.String.format('{0}javascripts/app', window.baseUrl || '')
         }
     });
     var $icon = window.$icon = function (icon) {
@@ -23,7 +23,7 @@
     });
 
     window.isAdmin = function () {
-        return currentUser.Roles.indexOf("administrators") >= 0;
+        // return currentUser.Roles.indexOf("administrators") >= 0;
     };
 
     window.$rpc = function (sn, args, cb) {
@@ -32,17 +32,17 @@
             cb = args;
             args = {};
         }
-        var url = Ext.String.format('{0}ajax/{1}', window.baseUrl || '', sn.replace(".", "/"));
+        var url = Ext.String.format('{0}{1}', window.baseUrl || '', sn.replace(".", "/"));
         $.post(url, args, function (data) {
             if (typeof data === 'string') {
                 if (data == "s_ok") cb(null, data);
-                else if (data.indexOf("e_") === 0) cb(data, "错误代码：" + data);
+                else if (data.indexOf("e_") === 0) cb(data, "error code：" + data);
                 else cb(null, data);
             } else {
                 cb(null, data);
             }
         }, 'json').fail(function (req, status, error) {
-            cb(status, "请求失败，错误状态：" + status + (error ? "，错误信息：" + error : ""));
+            cb(status, "request error，error status：" + status + (error ? "，error message：" + error : ""));
         });
     };
 
@@ -53,7 +53,7 @@
                 model: config.model,
                 proxy: 'memory'
             });
-            $rpc("Loader." + item, null, function (err, data) {
+            $rpc(item + '.loader', null, function (err, data) {
                 if (!err) {
                     store.add(data.data);
                     store.fireEvent("load");
@@ -68,7 +68,7 @@
             remoteFilter: true,
             proxy: {
                 type: 'ajax',
-                url: Ext.String.format('{0}ajax/loader/{1}', window.baseUrl || '', item),
+                url: Ext.String.format('{0}{1}/loader', window.baseUrl || '', item),
                 startParam: 's',
                 limitParam: 'ps',
                 reader: {
@@ -105,7 +105,7 @@
             });
         }
         var cls = 'App.views.' + view;
-        Ext.getBody().mask("正在加载中...");
+        Ext.getBody().mask("Loading...");
         Ext.require(cls, function () {
             if (window.viewPanel === undefined) throw new Error('View panel not ready.');
             window.viewPanel.removeAll();
@@ -140,13 +140,13 @@
                 xtype: 'component',
                 region: 'north',
                 height: 60,
-                html: '<div style="float:right"><a href="#" id="change-pwd">修改密码</a> | <a href="/logout">退出登录</a></div><h1>' + document.title + '</h1>'
+                html: '<div style="float:right"><a href="#" id="change-pwd">Reset Password</a> | <a href="/logout">Log out</a></div><h1>' + document.title + '</h1>'
             }, {
                 xtype: 'treepanel',
                 region: 'west',
                 width: 200,
                 store: navStore,
-                title: '菜单导航',
+                title: 'Navigator',
                 rootVisible: false,
                 listeners: {
                     select: function (grid, r) {
@@ -167,7 +167,7 @@
                         $('#change-pwd').click(function () {
                             var dlg = Ext.widget('window', {
                                 modal: true,
-                                title: '修改登录密码',
+                                title: 'Reset Password',
                                 width: 450,
                                 bodyPadding: 10,
                                 items: {
@@ -182,17 +182,17 @@
                                     },
                                     items: [{
                                         name: 'originalPassword',
-                                        fieldLabel: '当前密码',
+                                        fieldLabel: 'Current Password',
                                         allowBlank: false,
                                         inputType: 'password'
                                     }, {
                                         name: 'password',
-                                        fieldLabel: '新密码',
+                                        fieldLabel: 'New Password',
                                         allowBlank: false,
                                         inputType: 'password'
                                     }, {
                                         name: 'confirm',
-                                        fieldLabel: '密码确认',
+                                        fieldLabel: 'Confirm Password',
                                         allowBlank: false,
                                         inputType: 'password'
                                     }]

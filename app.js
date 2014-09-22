@@ -52,7 +52,7 @@ if (app.get('env') === 'development') {
 
 db.sequelize
   .sync({
-    logging: console.log,
+    // logging: console.log,
     force: false
   })
   .complete(function(err) {

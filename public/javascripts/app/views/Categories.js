@@ -4,28 +4,28 @@
         title: 'Zealot\'s admin',
         columns: [{
             text: "ID",
-            dataIndex: 'id',
+            dataIndex: 'Id',
             sortable: false,
             width: 40
         }, {
             text: "Name",
-            dataIndex: 'name',
+            dataIndex: 'Name',
             sortable: false,
             flex: 1
         }, {
             text: "createTime",
-            dataIndex: 'createTime',
+            dataIndex: 'CreateAt',
             sortable: false,
             width: 140
         }, {
             text: "updateTime",
-            dataIndex: 'updateTime',
+            dataIndex: 'UpdateAt',
             sortable: false,
             width: 140
         }],
         initComponent: function () {
             var me = this;
-            me.store = $loader("categories", {
+            me.store = $loader("category", {
                 model: "Category",
                 pageSize: 20
             });
@@ -38,12 +38,14 @@
                 items: ['-', {
                     icon: $icon('add'),
                     name: 'btn-add',
+                    text: 'Add',
                     handler: function () {
-                        me.addAdmin();
+                        me.addCategory();
                     }
                 }, {
                     icon: $icon('delete'),
                     name: 'btn-del',
+                    text: 'Delete',
                     disabled: true,
                     handler: function () {
                         me.deleteCategory(me.getSelectionModel().getSelection()[0]);
@@ -58,14 +60,34 @@
             }
         },
         deleteCategory: function (admin) {
-            var me = this, login = admin.get("id");
+            var me = this, id = admin.get("Id");
+            console.log(id);
+            Ext.Msg.confirm('Warning', 'Delete the category or not', function(btn) {
+                if(btn == 'yes'){
+                    $rpc('category.delete', {
+                        id: id
+                    }, function (err, result) {
+                                Ext.getBody().unmask();
+                                if (err) {
+                                    console.log(arguments);
+                                    Ext.Msg.alert("请求出错", "删除出错，" + result);
+                                }
+                                else {
+                                    //dlg.close();
+                                    me.getSelectionModel().deselectAll();
+                                    me.store.reload();
+                                    Ext.Msg.alert("成功", "删除成功");
+                                }
+                            });
+                }
+            });
         },
         addCategory: function () {
             var me = this,
                 dlg = Ext.widget('window', {
                     modal: true,
-                    title: '创建后台管理员',
-                    width: 350,
+                    title: 'Create New Artical Category',
+                    width: 450,
                     bodyPadding: 10,
                     items: {
                         xtype: 'form',
@@ -78,28 +100,14 @@
                             anchor: "100%"
                         },
                         items: [{
-                            name: 'login',
-                            fieldLabel: '登录名',
+                            name: 'name',
+                            fieldLabel: 'Category Name',
                             allowBlank: false,
                             length: 16
-                        }, {
-                            name: 'password',
-                            fieldLabel: '登陆密码',
-                            allowBlank: false,
-                            inputType: 'password'
-                        }, {
-                            name: 'confirm',
-                            fieldLabel: '密码确认',
-                            allowBlank: false,
-                            inputType: 'password'
-                        }, {
-                            name: 'isSuper',
-                            xtype: 'checkbox',
-                            fieldLabel: '超级管理员'
                         }]
                     },
                     buttons: [{
-                        text: '创建',
+                        text: 'Create',
                         handler: function () {
                             var form = dlg.down('form').getForm();
                             if (!form.isValid()) {
@@ -107,16 +115,9 @@
                                 return;
                             }
                             var values = form.getValues();
-                            if (values.password !== values.confirm) {
-                                Ext.Msg.alert("出错", "两次输入的密码不一致，请检查");
-                                return;
-                            }
-                            delete values.confirm;
-                            values.password = CryptoJS.SHA3(values.password).toString();
-                            values.isSuper = !!values.isSuper;
-
-                            Ext.getBody().mask('正在创建管理员账户，请稍后...');
-                            $rpc('admin.create', values, function (err, result) {
+                            
+                            Ext.getBody().mask('正在创建文章分类，请稍后...');
+                            $rpc('category.create', values, function (err, result) {
                                 Ext.getBody().unmask();
                                 if (err) {
                                     console.log(arguments);

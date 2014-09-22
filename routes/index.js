@@ -7,9 +7,9 @@ router.get('/', function(req, res) {
 //   db.Customer.findAll().success(function(customers){
    var sitenode = [
        { Id : "Home", Text : "Home Page", Icon: "navigator" },
-	   {Id: "Posts", Text: "Post Management", Icon: "navigator"},
-	   {Id: "Categories", Text: "Category Management", Icon: "navigator"},
-	   { Id: "Comment", Text: "Comment Management", Icon: "navigator"}
+	   {Id: "Posts", Text: "Post", Icon: "navigator"},
+	   {Id: "Categories", Text: "Category", Icon: "navigator"},
+	   { Id: "Comment", Text: "Comment", Icon: "navigator"}
 	];
 	
    res.render('index', 
