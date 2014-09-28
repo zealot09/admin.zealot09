@@ -14,9 +14,9 @@ module.exports = function(sequelize, DataType){
 			type: DataType.STRING,
 			field: 'title'
 		},
-		Comment: {
-			type: DataType.STRING,
-			field: 'comment'
+		Content: {
+			type: DataType.TEXT,
+			field: 'content'
 		},
 		CreateAt: {
 			type: DataType.DATE,

@@ -11,7 +11,7 @@ module.exports = function(sequelize, DataType){
 			field: 'name'
 		},
 		Amount: {
-			type: DataType.STRING,
+			type: DataType.INTEGER,
 			field: 'amount'
 		},
 		CreateAt: {

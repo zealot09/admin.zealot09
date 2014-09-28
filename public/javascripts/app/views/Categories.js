@@ -103,7 +103,7 @@
                             name: 'name',
                             fieldLabel: 'Category Name',
                             allowBlank: false,
-                            length: 16
+                            length: 160
                         }]
                     },
                     buttons: [{
