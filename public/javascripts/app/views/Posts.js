@@ -99,12 +99,27 @@
         },
         addPost: function () {
             var me = this,
-                dlg = Ext.widget('window', {
-                    modal: true,
-                    title: 'Create New Artical',
-                    width: 700,
-                    bodyPadding: 10,
-                    items: {
+                simpleTab = {
+                    title : 'preview',
+                    id: 'previewTab',
+                    bodyPadding: 5,
+                    height: 545,
+                    items: [{
+                            xtype: 'component',
+                            width: '100%',
+                            height: '100%',
+                            name: 'previewTable',
+                            id: 'previewTable',
+                            bodyPadding: 10,
+                            html: '<div id="preview"></div>'
+                        }]
+                },
+                postTab = new Ext.TabPanel({
+                activeTab: 0,
+                id: 'postTab',
+                bodyPadding: 5,
+                enableTabScroll: true,
+                items: [{
                         xtype: 'form',
                         overflowY: 'auto',
                         bodyPadding: 5,
@@ -118,7 +133,7 @@
                             name: 'name',
                             fieldLabel: 'Post Name',
                             allowBlank: false
-                        }, {
+                        },{
                             name: 'title',
                             fieldLabel: 'Post title',
                             allowBlank: false
@@ -131,6 +146,16 @@
                             height: 500
                         }]
                     },
+                    simpleTab
+                ]
+            }), 
+                dlg = Ext.widget('window', {
+                    modal: true,
+                    title: 'Create New Artical',
+                    width: 700,
+                    bodyPadding: 10,
+                    border: false,
+                    items: postTab,
                     buttons: [{
                         text: 'Create',
                         handler: function () {
@@ -159,7 +184,14 @@
                     }, {
                         text: 'Preview',
                         handler: function() { 
+                            var me = this;
+                            var elbg = $('textarea', dlg.down('textarea[name="content"]').el.dom),
+                            elpreview = $('#preview', Ext.getCmp('previewTable').el.dom);
+                            elpreview.html(marked(elbg.val()));
                             
+                            $('code', elpreview).each(function(index, block) {
+                                hljs.highlightBlock(block);
+                            });
                         }
                     }, {
                         text: 'Cancel',
@@ -167,11 +199,7 @@
                             dlg.close();
                         }
                     }]
-                }).show(null, function() {
-                    var me = this, blogArea = me.down('textarea[name="content"]'), elcontent = $('textarea', blogArea.el.dom);
-                    
-                    
-                }).center();
+                }).show().center();
         }
     });
 })();
