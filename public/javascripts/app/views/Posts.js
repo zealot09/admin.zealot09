@@ -99,7 +99,11 @@
         },
         addPost: function () {
             var me = this,
-                simpleTab = {
+                ctStore = $loader("category", {
+                model: "Category",
+                pageSize: 50
+            });
+               var simpleTab = {
                     title : 'preview',
                     id: 'previewTab',
                     bodyPadding: 5,
@@ -144,6 +148,15 @@
                             xtype: 'textarea',
                             allowBlank: false,
                             height: 500
+                        }, {
+                            name: 'categoryId',
+                            xtype: 'combobox',
+                            fieldLabel: 'Category',
+                            allowBlank: false,
+                            forceSelection: true,
+                            store: ctStore,
+                            valueField: 'Id',
+                            displayField: 'Name'
                         }]
                     },
                     simpleTab
@@ -167,17 +180,17 @@
                             var values = form.getValues();
                             
                             Ext.getBody().mask('正在创建文章分类，请稍后...');
-                            $rpc('category.create', values, function (err, result) {
+                            $rpc('post.create', values, function (err, result) {
                                 Ext.getBody().unmask();
                                 if (err) {
                                     console.log(arguments);
-                                    Ext.Msg.alert("请求出错", "创建管理员出错，" + result);
+                                    Ext.Msg.alert("请求出错", "创建文章出错，" + result);
                                 }
                                 else {
                                     dlg.close();
                                     me.getSelectionModel().deselectAll();
                                     me.store.reload();
-                                    Ext.Msg.alert("成功", "创建管理员成功");
+                                    Ext.Msg.alert("成功", "创建文章成功");
                                 }
                             });
                         }
@@ -185,9 +198,11 @@
                         text: 'Preview',
                         handler: function() { 
                             var me = this;
+                            Ext.getCmp('previewTable')
                             var elbg = $('textarea', dlg.down('textarea[name="content"]').el.dom),
                             elpreview = $('#preview', Ext.getCmp('previewTable').el.dom);
                             elpreview.html(marked(elbg.val()));
+                            
                             
                             $('code', elpreview).each(function(index, block) {
                                 hljs.highlightBlock(block);

@@ -16,13 +16,12 @@ router.post('/loader', function(req, res){
     db.Category.findAll().success(function(categories) {
         db.Post.findAll().success(function(posts){
             var processedPosts = _.map(posts, function(post) {
-                post.Category = _.find(categories, function(ct) {
+                post.dataValues.Category = _.find(categories, function(ct) {
                     return ct.Id = post.CategoryId;
                 }).Name;
                 return post;
             });
-            
-            console.log(processedPosts);
+            //console.log(processedPosts);
             res.json({
                 status: 'ok',
                 data: processedPosts
