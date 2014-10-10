@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cons = require('consolidate');
 var db = require('./models');
+var session = require("express-session");
 // var path = require('path');
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -19,6 +20,7 @@ app.engine('html', cons.swig);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'html');
 
+app.use(session({ secret: 'zealot', cookie: { maxAge: 60000 }}))
 app.use(favicon());
 app.use(logger('dev'));
 app.use(bodyParser.json());
