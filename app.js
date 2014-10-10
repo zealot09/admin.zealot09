@@ -59,7 +59,7 @@ db.sequelize
     if (err) {
       throw err[0]
     } else {
-      app.listen(8080, function(){
+      app.listen(3000, function(){
       })
     }
   });
