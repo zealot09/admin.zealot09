@@ -9,7 +9,7 @@ var EXPIRED = 7;
 
 /* GET home page. */
 router.get('/', function(req, res) {
-   if(!app.get('currentUser')){
+   if(!req.session.currentUser){
         res.render('bglogin', {});    
    }else{
        var sitenode = [
@@ -28,13 +28,13 @@ router.get('/', function(req, res) {
 router.post('/checkLogin', function(req, res) {
     var cn = req.cookies.cn, ctk = req.cookies.ctk, token = req.cookies.token;
     //console.log(cn + '-' + ctk + '-' + token);
-    if(app.get('currentUser')){
+    // if(app.get('currentUser')){
+    if(req.session.currentUser){
         res.json({success: true});    
     }else {
         if (!cn || !ctk || !token){
             res.json({success: false, msg: 'You have disabled broswer cookie, please check it!'});
         } 
-        
         // if (IsExpired(parseInt(ctk))) return null;
         db.Admin.findAll({
         where: {
@@ -49,11 +49,12 @@ router.post('/checkLogin', function(req, res) {
             var cpthash = CryptoJS.MD5(manager.Account + ctk + cp).toString();
             console.log(StringXor(cp, cpthash));
             if(token === StringXor(cp, cpthash)) {
-                app.set("currentUser", {
-                    Account: manager.Account,
-                    Password: manager.Password,
-                    ContactPhone: manager.ContactPhone
-                });
+                // app.set("currentUser", {
+                //     Account: manager.Account,
+                //     Password: manager.Password,
+                //     ContactPhone: manager.ContactPhone
+                // });
+                req.session.currentUser = manager.Account;
                 res.json({success: true});
             }else{
                 res.json({success: false, msg: 'wrong password or user name!'});
